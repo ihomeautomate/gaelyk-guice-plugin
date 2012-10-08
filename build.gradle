@@ -12,21 +12,20 @@ subprojects {
 		gaeGebPluginVersion = '0.3'
 		gaelykPluginVersion = '0.4'
 		gebVersion = '0.7.2'
-		spockVersion = '0.6-groovy-1.8'
 		seleniumVersion = '2.25.0'
 	}
 
 	repositories {
 		mavenCentral()
+		maven {
+			url 'https://oss.sonatype.org/content/repositories/snapshots/'
+		}
 	}
 
 	dependencies {
 		groovy "org.codehaus.groovy:groovy-all:$groovyVersion"
 		codenarc 'org.codenarc:CodeNarc:0.17'
 		compile "org.gaelyk:gaelyk:$gaelykVersion"
-		testCompile "org.spockframework:spock-core:$spockVersion", {
-			exclude group: 'org.codehaus.groovy', module: 'groovy-all'
-		}
 	}
 
 	codenarc {

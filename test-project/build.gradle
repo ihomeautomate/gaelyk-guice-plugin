@@ -16,6 +16,9 @@ buildscript {
 
 dependencies {
 	compile project(':gaelyk-guice-plugin')
+	functionalTestCompile "org.spockframework:spock-core:0.6-groovy-1.8", {
+		exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+	}
 	functionalTestCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion",
 		"org.codehaus.geb:geb-spock:$gebVersion"
 	gaeSdk "com.google.appengine:appengine-java-sdk:$gaeVersion"

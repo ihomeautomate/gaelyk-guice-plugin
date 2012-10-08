@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package groovyx.gaelyk.plugin.guice;
+package groovyx.gaelyk.plugin.guice
 
-
-import spock.lang.Specification
-import javax.servlet.ServletContext
-import javax.servlet.FilterConfig
-import javax.servlet.ServletRequest
-import javax.servlet.FilterChain
-import static groovyx.gaelyk.plugin.guice.GuicePlugin.INJECTOR_ATTRIBUTE
 import com.google.inject.Injector
-import javax.servlet.ServletResponse
+import spock.lang.Specification
+import javax.servlet.*
+import static groovyx.gaelyk.plugin.guice.GuicePlugin.INJECTOR_ATTRIBUTE
 
-public class GaelykGuicePluginFilterTest extends Specification {
+class GaelykGuicePluginFilterSpec extends Specification {
 	void "copies injector from servlet context to request"() {
 		given:
 		def filter = new GaelykGuicePluginFilter()

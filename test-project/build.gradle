@@ -1,0 +1,32 @@
+apply plugin: 'gaelyk'
+apply plugin: 'gae-geb'
+
+sourceCompatibility = 1.5
+
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath "org.gradle.api.plugins:gradle-gaelyk-plugin:$gaelykPluginVersion"
+		classpath "org.gradle.api.plugins:gradle-gae-geb-plugin:$gaeGebPluginVersion"
+	}
+}
+
+dependencies {
+	compile project(':gaelyk-guice-plugin')
+	functionalTestCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion",
+		"org.codehaus.geb:geb-spock:$gebVersion"
+	gaeSdk "com.google.appengine:appengine-java-sdk:$gaeVersion"
+}
+
+task createGroovletsDir {
+	def groovletsDir = new File(webAppDir, 'WEB-INF/groovy')
+	outputs.file(groovletsDir)
+	doFirst {
+		groovletsDir.mkdirs()
+	}
+}
+
+gaelykPrecompileGroovlet.dependsOn createGroovletsDir

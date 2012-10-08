@@ -1,0 +1,35 @@
+apply plugin: 'idea'
+apply from: 'gradle/idea.gradle'
+
+subprojects {
+	apply plugin: 'groovy'
+	apply plugin: 'codenarc'
+
+	ext {
+		groovyVersion = '1.8.8'
+		gaeVersion = '1.6.6'
+		gaelykVersion = '1.2'
+		gaeGebPluginVersion = '0.3'
+		gaelykPluginVersion = '0.4'
+		gebVersion = '0.7.2'
+		spockVersion = '0.6-groovy-1.8'
+		seleniumVersion = '2.25.0'
+	}
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		groovy "org.codehaus.groovy:groovy-all:$groovyVersion"
+		codenarc 'org.codenarc:CodeNarc:0.17'
+		compile "org.gaelyk:gaelyk:$gaelykVersion"
+		testCompile "org.spockframework:spock-core:$spockVersion", {
+			exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+		}
+	}
+
+	codenarc {
+		configFile = rootProject.file('config/codenarc/rulesets.groovy')
+	}
+}

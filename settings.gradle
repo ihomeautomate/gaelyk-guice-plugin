@@ -1,0 +1,2 @@
+include 'gaelyk-guice-plugin', 'test-project'
+rootProject.name = 'gaelyk-guice-plugin-all'

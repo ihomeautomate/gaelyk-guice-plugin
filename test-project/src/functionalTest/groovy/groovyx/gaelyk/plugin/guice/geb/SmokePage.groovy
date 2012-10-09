@@ -22,5 +22,6 @@ class SmokePage extends Page {
 	static content = {
 		injectedIntegerValue { $('#integer').text() as Integer }
 		injectedStringValue { $('#string').text() }
+		manuallyInjectedValue { $('#manuallyInjected').text() }
 	}
 }

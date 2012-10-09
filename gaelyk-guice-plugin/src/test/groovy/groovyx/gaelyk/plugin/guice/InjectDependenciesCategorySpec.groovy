@@ -24,7 +24,7 @@ import spock.lang.Specification
 import spock.util.mop.Use
 import static com.google.inject.Key.get
 
-@Use(InjectCategory)
+@Use(InjectDependenciesCategory)
 class InjectCategorySpec extends Specification {
 	def script = new InjectCategorySpecScript()
 	Injector injector = Mock(Injector)
@@ -40,7 +40,7 @@ class InjectCategorySpec extends Specification {
 		Key key = get(String, Names.named('test'))
 
 		when:
-		script.inject key, Integer
+		script.injectDependencies key, Integer
 
 		then:
 		1 * new GaelykGuiceInjector(injector, binding) >> gaelykGuiceInjector

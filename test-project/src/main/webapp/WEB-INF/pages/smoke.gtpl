@@ -1,6 +1,7 @@
 <html>
 	<body>
-		<div id="string">${request.string}</div>
-		<div id="integer">${request.integer}</div>
+		<% ['string', 'integer', 'manuallyInjected' ].each { %>
+			<div id="${it}">${request[it]}</div>
+		<% } %>
 	</body>
 </html>

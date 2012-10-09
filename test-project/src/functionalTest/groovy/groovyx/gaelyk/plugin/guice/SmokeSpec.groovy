@@ -16,10 +16,10 @@
 
 package groovyx.gaelyk.plugin.guice
 
-import geb.spock.GebSpec
+import geb.spock.GebReportingSpec
 import groovyx.gaelyk.plugin.guice.geb.SmokePage
 
-class SmokeSpec extends GebSpec {
+class SmokeSpec extends GebReportingSpec {
 	void 'injector is available in groovlets'() {
 		when:
 		to SmokePage
@@ -27,5 +27,6 @@ class SmokeSpec extends GebSpec {
 		then:
 		injectedIntegerValue == 1337
 		injectedStringValue == 'Hello world!'
+		manuallyInjectedValue == 'Hello world!'
 	}
 }

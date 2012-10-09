@@ -1,3 +1,6 @@
+import com.google.inject.name.Names
+import com.google.inject.Key
+
 /*
  * Copyright 2012 the original author or authors.
  *
@@ -14,7 +17,9 @@
  * limitations under the License.
  */
 
-request.string = injector.getInstance(String)
-request.integer = injector.getInstance(Integer)
+injectDependencies String, Integer
+request.string = string
+request.integer = integer
+request.manuallyInjected = injector.getInstance(String)
 
 forward '/WEB-INF/pages/smoke.gtpl'

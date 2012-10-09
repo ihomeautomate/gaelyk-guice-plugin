@@ -16,8 +16,8 @@
 
 package groovyx.gaelyk.plugin.guice
 
-class InjectCategory {
-	static void inject(Script script, Object... args) {
+class InjectDependenciesCategory {
+	static void injectDependencies(Script script, Object... args) {
 		new GaelykGuiceInjector(script.binding.injector, script.binding).inject(args)
 	}
 }

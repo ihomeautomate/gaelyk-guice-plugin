@@ -4,7 +4,11 @@ ruleset {
 	ruleset('rulesets/concurrency.xml')
 	ruleset('rulesets/convention.xml')
 	ruleset('rulesets/design.xml')
-	ruleset('rulesets/dry.xml')
+	ruleset('rulesets/dry.xml') {
+		DuplicateStringLiteral {
+			doNotApplyToClassNames = '*Spec'
+		}
+	}
 	ruleset('rulesets/exceptions.xml')
 	ruleset('rulesets/formatting.xml')
 	ruleset('rulesets/generic.xml')

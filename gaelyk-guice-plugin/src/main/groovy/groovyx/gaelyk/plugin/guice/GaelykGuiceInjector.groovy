@@ -33,6 +33,11 @@ class GaelykGuiceInjector {
 
 	void inject(Object... args) {
 		args.each { arg ->
+			if (!(arg instanceof Class) && !(arg in Key)) {
+				throw new InvalidInjectionException("Only classes and ${Key.name} instances are allowed " +
+					'as injection specifiactions but you passed an instance of: ' +
+					"'${arg.getClass().name}' with value: '$arg'")
+			}
 			if (arg in Key) {
 				if (arg.annotationType != Named) {
 					throw new InvalidInjectionException("Unsupported injection key annotation: '${arg.annotationType.name}'" +
@@ -40,13 +45,17 @@ class GaelykGuiceInjector {
 				}
 			}
 			def injectionName = getInjectionName(arg)
-			//verifyNoBindingFor(injectionName)
+			verifyNoBindingFor(injectionName)
 			binding[injectionName] = injector.getInstance(arg)
 		}
 	}
 
-	/*private void verifyNoBindingFor(String injectionName) {
-	}*/
+	private void verifyNoBindingFor(String injectionName) {
+		if (binding.hasVariable(injectionName)) {
+			throw new InvalidInjectionException("Script binding already contains a value for '$injectionName' " +
+				"with class: '${binding[injectionName].getClass().name}' and value: '${binding[injectionName]}'")
+		}
+	}
 
 	private String getInjectionName(Class injectedClass) {
 		uncapitalize(injectedClass.simpleName)

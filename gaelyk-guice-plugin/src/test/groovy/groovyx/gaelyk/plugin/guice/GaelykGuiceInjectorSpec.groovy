@@ -24,6 +24,7 @@ import groovyx.gaelyk.plugin.guice.exception.InvalidInjectionException
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
 import spock.lang.Specification
+import spock.lang.Unroll
 import static com.google.inject.Key.get
 import static java.lang.annotation.ElementType.*
 import static java.lang.annotation.RetentionPolicy.RUNTIME
@@ -45,17 +46,44 @@ class GaelykGuiceInjectorSpec extends Specification {
 
 	void "injection works as expected"() {
 		given:
-		def classInjectedString = 'classInjected'
-		def nameInjectedString = 'nameInjected'
 		def namedKey = Key.get(String, Names.named('namedInjectedInstance'))
 		when:
 		gaelykGuiceInjector.inject String, namedKey
 
 		then:
-		1 * injector.getInstance(String) >> classInjectedString
-		1 * injector.getInstance(namedKey) >> nameInjectedString
-		binding.string == classInjectedString
-		binding.namedInjectedInstance == nameInjectedString
+		1 * injector.getInstance(String) >> 'injectedByType'
+		1 * injector.getInstance(namedKey) >> 'injectedByName'
+		binding.string == 'injectedByType'
+		binding.namedInjectedInstance == 'injectedByName'
+	}
+
+	@Unroll
+	void "throws an exception if binding has already a value for a name that is about to be bound - #scenario"() {
+		given:
+		binding[bindingName] = 'existing value'
+
+		when:
+		gaelykGuiceInjector.inject injectionSpecification
+
+		then:
+		InvalidInjectionException e = thrown()
+		e.message == "Script binding already contains a value for '$bindingName' with class: " +
+			"'java.lang.String' and value: 'existing value'"
+
+		where:
+		scenatrio           | bindingName             | injectionSpecification
+		'injection by type' | 'string'                | String
+		'injection by name' | 'namedInjectedInstance' | Key.get(String, Names.named('namedInjectedInstance'))
+	}
+
+	void "throws an exception if an invalid injection specification is passed"() {
+		when:
+		gaelykGuiceInjector.inject 1
+
+		then:
+		InvalidInjectionException e = thrown()
+		e.message == 'Only classes and com.google.inject.Key instances are allowed as injection specifiactions ' +
+			"but you passed an instance of: 'java.lang.Integer' with value: '1'"
 	}
 }
 

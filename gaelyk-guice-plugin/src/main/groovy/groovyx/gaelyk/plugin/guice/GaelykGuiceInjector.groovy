@@ -20,10 +20,11 @@ import com.google.inject.Injector
 import groovyx.gaelyk.plugin.guice.exception.InvalidInjectionException
 import com.google.inject.name.Named
 import com.google.inject.Key
+import static org.apache.commons.lang3.text.WordUtils.uncapitalize
 
 class GaelykGuiceInjector {
-	private final injector
-	private final binding
+	private final Injector injector
+	private final Binding binding
 
 	GaelykGuiceInjector(Injector injector, Binding binding) {
 		this.injector = injector
@@ -38,6 +39,20 @@ class GaelykGuiceInjector {
 							", only '${Named.name}' is supported as key annotation")
 				}
 			}
+			def injectionName = getInjectionName(arg)
+			verifyNoBindingFor(injectionName)
+			binding[injectionName] = injector.getInstance(arg)
 		}
+	}
+
+	private void verifyNoBindingFor(String injectionName) {
+	}
+
+	private String getInjectionName(Class injectedClass) {
+		uncapitalize(injectedClass.simpleName)
+	}
+
+	private String getInjectionName(Key injectionKey) {
+		injectionKey.annotation.value
 	}
 }

@@ -25,6 +25,8 @@ import spock.lang.Specification
 import static com.google.inject.Key.get
 import static java.lang.annotation.ElementType.*
 import static java.lang.annotation.RetentionPolicy.RUNTIME
+import com.google.inject.Key
+import com.google.inject.name.Names
 
 class GaelykGuiceInjectorSpec extends Specification {
 	Injector injector = Mock(Injector)
@@ -39,6 +41,17 @@ class GaelykGuiceInjectorSpec extends Specification {
 		InvalidInjectionException e = thrown()
 		e.message == "Unsupported injection key annotation: 'groovyx.gaelyk.plugin.guice.UnsupportedKeyAnnotation'" +
 			", only 'com.google.inject.name.Named' is supported as key annotation"
+	}
+
+	void "injection works as expected"() {
+		when:
+		gaelykGuiceInjector.inject String, Key.get(String, Names.named('namedInjectedInstance'))
+
+		then:
+		1 * injector.getInstance(String) >> 'classInjected'
+		1 * injector.getInstance(Key.get(String, Names.named('namedInjectedInstance'))) >> 'nameInjected'
+		binding.string == 'classInjected'
+		binding.namedInjectedInstance == 'nameInjected'
 	}
 }
 

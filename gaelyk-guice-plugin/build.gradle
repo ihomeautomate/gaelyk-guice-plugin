@@ -1,5 +1,6 @@
 dependencies {
-	compile 'com.google.inject.extensions:guice-servlet:3.0'
+	compile 'com.google.inject.extensions:guice-servlet:3.0',
+		'org.apache.commons:commons-lang3:3.1'
 	testCompile 'org.spockframework:spock-core:0.7-groovy-1.8-SNAPSHOT', {
 		exclude group: 'org.codehaus.groovy', module: 'groovy-all'
 	}

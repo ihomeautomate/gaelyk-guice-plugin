@@ -18,6 +18,8 @@ package groovyx.gaelyk.plugin.guice
 
 import com.google.inject.BindingAnnotation
 import com.google.inject.Injector
+import com.google.inject.Key
+import com.google.inject.name.Names
 import groovyx.gaelyk.plugin.guice.exception.InvalidInjectionException
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
@@ -25,8 +27,6 @@ import spock.lang.Specification
 import static com.google.inject.Key.get
 import static java.lang.annotation.ElementType.*
 import static java.lang.annotation.RetentionPolicy.RUNTIME
-import com.google.inject.Key
-import com.google.inject.name.Names
 
 class GaelykGuiceInjectorSpec extends Specification {
 	Injector injector = Mock(Injector)
@@ -44,14 +44,18 @@ class GaelykGuiceInjectorSpec extends Specification {
 	}
 
 	void "injection works as expected"() {
+		given:
+		def classInjectedString = 'classInjected'
+		def nameInjectedString = 'nameInjected'
+		def namedKey = Key.get(String, Names.named('namedInjectedInstance'))
 		when:
-		gaelykGuiceInjector.inject String, Key.get(String, Names.named('namedInjectedInstance'))
+		gaelykGuiceInjector.inject String, namedKey
 
 		then:
-		1 * injector.getInstance(String) >> 'classInjected'
-		1 * injector.getInstance(Key.get(String, Names.named('namedInjectedInstance'))) >> 'nameInjected'
-		binding.string == 'classInjected'
-		binding.namedInjectedInstance == 'nameInjected'
+		1 * injector.getInstance(String) >> classInjectedString
+		1 * injector.getInstance(namedKey) >> nameInjectedString
+		binding.string == classInjectedString
+		binding.namedInjectedInstance == nameInjectedString
 	}
 }
 

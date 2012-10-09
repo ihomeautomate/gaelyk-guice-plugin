@@ -40,13 +40,13 @@ class GaelykGuiceInjector {
 				}
 			}
 			def injectionName = getInjectionName(arg)
-			verifyNoBindingFor(injectionName)
+			//verifyNoBindingFor(injectionName)
 			binding[injectionName] = injector.getInstance(arg)
 		}
 	}
 
-	private void verifyNoBindingFor(String injectionName) {
-	}
+	/*private void verifyNoBindingFor(String injectionName) {
+	}*/
 
 	private String getInjectionName(Class injectedClass) {
 		uncapitalize(injectedClass.simpleName)

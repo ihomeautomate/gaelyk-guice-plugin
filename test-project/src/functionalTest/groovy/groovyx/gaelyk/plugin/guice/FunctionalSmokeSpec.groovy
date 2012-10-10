@@ -19,7 +19,7 @@ package groovyx.gaelyk.plugin.guice
 import geb.spock.GebReportingSpec
 import groovyx.gaelyk.plugin.guice.geb.SmokePage
 
-class SmokeSpec extends GebReportingSpec {
+class FunctionalSmokeSpec extends GebReportingSpec {
 	void 'injector is available in groovlets'() {
 		when:
 		to SmokePage

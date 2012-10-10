@@ -5,8 +5,10 @@ ruleset {
 	ruleset('rulesets/convention.xml')
 	ruleset('rulesets/design.xml')
 	ruleset('rulesets/dry.xml') {
-		DuplicateStringLiteral {
-			doNotApplyToClassNames = '*Spec'
+		['DuplicateStringLiteral', 'DuplicateNumberLiteral'].each {
+			"$it" {
+				doNotApplyToClassNames = '*Spec'
+			}
 		}
 	}
 	ruleset('rulesets/exceptions.xml')

@@ -16,6 +16,7 @@ buildscript {
 
 dependencies {
 	compile project(':gaelyk-guice-plugin')
+	testCompile 'org.gaelyk:gaelyk-spock:0.3.0.1'
 	functionalTestCompile "org.spockframework:spock-core:0.6-groovy-1.8", {
 		exclude group: 'org.codehaus.groovy', module: 'groovy-all'
 	}

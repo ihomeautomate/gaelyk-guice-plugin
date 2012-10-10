@@ -1,5 +1,5 @@
 import com.google.inject.name.Names
-import com.google.inject.Key
+import static com.google.inject.Key.get
 
 /*
  * Copyright 2012 the original author or authors.
@@ -17,9 +17,9 @@ import com.google.inject.Key
  * limitations under the License.
  */
 
-injectDependencies String, Integer
+injectDependencies String, get(Integer, Names.named('leet'))
 request.string = string
-request.integer = integer
+request.leet = leet
 request.manuallyInjected = injector.getInstance(String)
 
 forward '/WEB-INF/pages/smoke.gtpl'

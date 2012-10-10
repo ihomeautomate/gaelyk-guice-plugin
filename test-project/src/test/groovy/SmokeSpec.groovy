@@ -15,9 +15,11 @@
  */
 
 import com.google.inject.Injector
+import com.google.inject.name.Names
 import groovyx.gaelyk.plugin.guice.InjectDependenciesCategory
 import groovyx.gaelyk.spock.ConventionalGaelykUnitSpec
 import spock.util.mop.Use
+import static com.google.inject.Key.get
 
 @Use(InjectDependenciesCategory)
 class SmokeSpec extends ConventionalGaelykUnitSpec {
@@ -30,7 +32,7 @@ class SmokeSpec extends ConventionalGaelykUnitSpec {
 	void "groovlets that use injection can be unit tested"() {
 		given:
 		injector.getInstance(String) >> 'Hello world!'
-		injector.getInstance(Integer) >> 1337
+		injector.getInstance(get(Integer, Names.named('leet'))) >> 1337
 
 		when:
 		smoke.get()
@@ -38,6 +40,6 @@ class SmokeSpec extends ConventionalGaelykUnitSpec {
 		then:
 		smoke.request.string == 'Hello world!'
 		smoke.request.manuallyInjected == 'Hello world!'
-		smoke.request.integer == 1337
+		smoke.request.leet == 1337
 	}
 }

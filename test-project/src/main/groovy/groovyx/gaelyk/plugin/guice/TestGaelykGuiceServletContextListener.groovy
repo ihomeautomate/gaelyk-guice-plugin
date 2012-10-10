@@ -18,7 +18,9 @@ package groovyx.gaelyk.plugin.guice
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Injector
+import com.google.inject.name.Names
 import com.google.inject.servlet.GuiceServletContextListener
+import static com.google.inject.Key.get
 
 class TestGaelykGuiceServletContextListener extends GuiceServletContextListener {
 	@Override
@@ -27,7 +29,7 @@ class TestGaelykGuiceServletContextListener extends GuiceServletContextListener 
 			@Override
 			protected void configure() {
 				bind(String).toInstance('Hello world!')
-				bind(Integer).toInstance(1337)
+				bind(get(Integer, Names.named('leet'))).toInstance(1337)
 			}
 		});
 	}

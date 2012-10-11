@@ -24,7 +24,7 @@ To be able to use the plugin you need to modify `web.xml` file of your applicati
 
 #### Installing `GuiceFilter`
 
-> **NOTE:** This step is not necessary if you not wish to use [Request or Session scopes](http://code.google.com/p/google-guice/wiki/ServletModule#Using_RequestScope) in your dependencies.
+> **NOTE:** This step is not necessary if you do not need to use [Request or Session scopes](http://code.google.com/p/google-guice/wiki/ServletModule#Using_RequestScope) in your dependencies.
 
 Add the following to `web.xml`.
 

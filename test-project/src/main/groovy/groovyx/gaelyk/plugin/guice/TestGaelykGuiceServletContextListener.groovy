@@ -29,6 +29,7 @@ class TestGaelykGuiceServletContextListener extends GuiceServletContextListener 
 			protected void configure() {
 				bind(String).toInstance('Hello world!')
 				bind(Integer).annotatedWith(Names.named('leet')).toInstance(1337)
+				bind(String).annotatedWith(CustomQualifier).toInstance('Hello Gaelyk!')
 			}
 		});
 	}

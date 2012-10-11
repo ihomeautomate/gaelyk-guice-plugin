@@ -1,6 +1,6 @@
 <html>
 	<body>
-		<% ['string', 'leet', 'manuallyInjected' ].each { %>
+		<% ['string', 'leet', 'manuallyInjected', 'customQualifier' ].each { %>
 			<div id="${it}">${request[it]}</div>
 		<% } %>
 	</body>

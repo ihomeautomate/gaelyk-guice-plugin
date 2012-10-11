@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package groovyx.gaelyk.plugin.guice.geb
+package groovyx.gaelyk.plugin.guice
 
-import geb.Page
+import com.google.inject.BindingAnnotation
+import java.lang.annotation.Retention
+import java.lang.annotation.Target
+import static java.lang.annotation.ElementType.*
+import static java.lang.annotation.RetentionPolicy.RUNTIME
 
-class SmokePage extends Page {
-	static content = {
-		injectedIntegerValue { $('#leet').text() as Integer }
-		injectedStringValue { $('#string').text() }
-		manuallyInjectedValue { $('#manuallyInjected').text() }
-		customQualifierValue { $('#customQualifier').text() }
-	}
+@Retention(RUNTIME)
+@Target([FIELD, PARAMETER, METHOD])
+@BindingAnnotation
+@interface CustomQualifier {
 }

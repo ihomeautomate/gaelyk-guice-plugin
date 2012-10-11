@@ -16,45 +16,34 @@
 
 package groovyx.gaelyk.plugin.guice
 
-import com.google.inject.BindingAnnotation
 import com.google.inject.Injector
-import com.google.inject.Key
 import com.google.inject.name.Names
+import com.google.inject.servlet.RequestParameters
 import groovyx.gaelyk.plugin.guice.exception.InvalidInjectionException
-import java.lang.annotation.Retention
-import java.lang.annotation.Target
 import spock.lang.Specification
 import spock.lang.Unroll
 import static com.google.inject.Key.get
-import static java.lang.annotation.ElementType.*
-import static java.lang.annotation.RetentionPolicy.RUNTIME
 
 class GaelykGuiceInjectorSpec extends Specification {
 	Injector injector = Mock(Injector)
 	Binding binding = new Binding()
 	GaelykGuiceInjector gaelykGuiceInjector = new GaelykGuiceInjector(injector, binding)
 
-	void "throws an exception if key is not @Named based"() {
-		when:
-		gaelykGuiceInjector.inject get(String, UnsupportedKeyAnnotation)
-
-		then:
-		InvalidInjectionException e = thrown()
-		e.message == "Unsupported injection key annotation: 'groovyx.gaelyk.plugin.guice.UnsupportedKeyAnnotation'" +
-			", only 'com.google.inject.name.Named' is supported as key annotation"
-	}
-
 	void "injection works as expected"() {
 		given:
-		def namedKey = Key.get(String, Names.named('namedInjectedInstance'))
+		def namedKey = get(String, Names.named('namedInjectedInstance'))
+		def qualifierKey = get(String, RequestParameters)
+
 		when:
-		gaelykGuiceInjector.inject String, namedKey
+		gaelykGuiceInjector.inject String, namedKey, qualifierKey
 
 		then:
 		1 * injector.getInstance(String) >> 'injectedByType'
 		1 * injector.getInstance(namedKey) >> 'injectedByName'
+		1 * injector.getInstance(qualifierKey) >> 'injectedByQualifier'
 		binding.string == 'injectedByType'
 		binding.namedInjectedInstance == 'injectedByName'
+		binding.requestParameters == 'injectedByQualifier'
 	}
 
 	@Unroll
@@ -71,9 +60,10 @@ class GaelykGuiceInjectorSpec extends Specification {
 			"'java.lang.String' and value: 'existing value'"
 
 		where:
-		scenatrio           | bindingName             | injectionSpecification
-		'injection by type' | 'string'                | String
-		'injection by name' | 'namedInjectedInstance' | Key.get(String, Names.named('namedInjectedInstance'))
+		scenario                 | bindingName             | injectionSpecification
+		'injection by type'      | 'string'                | String
+		'injection by name'      | 'namedInjectedInstance' | get(String, Names.named('namedInjectedInstance'))
+		'injection by qualifier' | 'requestParameters'     | get(String, RequestParameters)
 	}
 
 	void "throws an exception if an invalid injection specification is passed"() {
@@ -86,7 +76,3 @@ class GaelykGuiceInjectorSpec extends Specification {
 			"but you passed an instance of: 'java.lang.Integer' with value: '1'"
 	}
 }
-
-
-@BindingAnnotation @Target([FIELD, PARAMETER, METHOD]) @Retention(RUNTIME)
-@interface UnsupportedKeyAnnotation {}

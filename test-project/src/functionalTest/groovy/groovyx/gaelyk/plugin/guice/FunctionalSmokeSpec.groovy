@@ -28,5 +28,6 @@ class FunctionalSmokeSpec extends GebReportingSpec {
 		injectedIntegerValue == 1337
 		injectedStringValue == 'Hello world!'
 		manuallyInjectedValue == 'Hello world!'
+		customQualifierValue == 'Hello Gaelyk!'
 	}
 }

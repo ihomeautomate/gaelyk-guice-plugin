@@ -38,12 +38,6 @@ class GaelykGuiceInjector {
 					'as injection specifiactions but you passed an instance of: ' +
 					"'${arg.getClass().name}' with value: '$arg'")
 			}
-			if (arg in Key) {
-				if (arg.annotationType != Named) {
-					throw new InvalidInjectionException("Unsupported injection key annotation: '${arg.annotationType.name}'" +
-							", only '${Named.name}' is supported as key annotation")
-				}
-			}
 			def injectionName = getInjectionName(arg)
 			verifyNoBindingFor(injectionName)
 			binding[injectionName] = injector.getInstance(arg)
@@ -62,6 +56,10 @@ class GaelykGuiceInjector {
 	}
 
 	private String getInjectionName(Key injectionKey) {
-		injectionKey.annotation.value
+		if (injectionKey.annotation in Named) {
+			injectionKey.annotation.value
+		} else {
+			uncapitalize(injectionKey.annotationType.simpleName)
+		}
 	}
 }

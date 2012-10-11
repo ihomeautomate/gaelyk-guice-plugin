@@ -16,6 +16,7 @@
 
 import com.google.inject.Injector
 import com.google.inject.name.Names
+import groovyx.gaelyk.plugin.guice.CustomQualifier
 import groovyx.gaelyk.plugin.guice.InjectDependenciesCategory
 import groovyx.gaelyk.spock.ConventionalGaelykUnitSpec
 import spock.util.mop.Use
@@ -33,6 +34,7 @@ class SmokeSpec extends ConventionalGaelykUnitSpec {
 		given:
 		injector.getInstance(String) >> 'Hello world!'
 		injector.getInstance(get(Integer, Names.named('leet'))) >> 1337
+		injector.getInstance(get(String, CustomQualifier)) >> 'Hello Gaelyk!'
 
 		when:
 		smoke.get()
@@ -41,5 +43,6 @@ class SmokeSpec extends ConventionalGaelykUnitSpec {
 		smoke.request.string == 'Hello world!'
 		smoke.request.manuallyInjected == 'Hello world!'
 		smoke.request.leet == 1337
+		smoke.request.customQualifier == 'Hello Gaelyk!'
 	}
 }

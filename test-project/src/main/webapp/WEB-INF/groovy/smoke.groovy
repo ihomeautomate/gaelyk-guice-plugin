@@ -1,5 +1,6 @@
 import com.google.inject.name.Names
 import static com.google.inject.Key.get
+import groovyx.gaelyk.plugin.guice.CustomQualifier
 
 /*
  * Copyright 2012 the original author or authors.
@@ -17,9 +18,10 @@ import static com.google.inject.Key.get
  * limitations under the License.
  */
 
-injectDependencies String, get(Integer, Names.named('leet'))
+injectDependencies String, get(Integer, Names.named('leet')), get(String, CustomQualifier)
 request.string = string
 request.leet = leet
+request.customQualifier = customQualifier
 request.manuallyInjected = injector.getInstance(String)
 
 forward '/WEB-INF/pages/smoke.gtpl'

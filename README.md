@@ -119,8 +119,24 @@ The following code in a groovlet will pass:
 
 #### Injection by qualifier
 
+If a dependency definition passed to a `injectDependencies()` call is a `Key` instance and the binding annotation type is defferent than `@Named` instance then the resolved dependency will be injected under uncapitalized class name of the binding annotation.
+
+Given the following binding specified in your module class:
+
+	bind(Map).annotatedWith(RequestParameters).toInstance([id: 123])
+
+The following code in a groovlet will pass:
+
+	injectDependencies Key.get(Map, RequestParameters)
+
+	assert requestParameters.id == 123
 
 ### Using `Injector` directly
 
+In situations when you need more control over the names under which dependencies are injected into the binding of the groovlet you can always fall back to using the `Injector` directly. An `Injector` instance is bound under `injector` in your groovlets. Given the example service and binding specified in the [Installation section](#installation) you can inject a `MyService` instance under a different name wit the following code:
+
+	differentNameForMyService = injector.getInstance(MyService)
+
+	assert differentNameForMyService.injected == 'Hello World!'
 
 ## Unit testing groovlets that use plugin features

@@ -36,5 +36,5 @@ task createGroovletsDir {
 gaelykPrecompileGroovlet.dependsOn createGroovletsDir
 
 gaeFunctionalTest {
-	systemProperty 'geb.build.reportsDir', new File(reportsDir, 'geb').absolutePath
+	systemProperty 'geb.build.reportsDir', new File(reporting.baseDir, 'geb').absolutePath
 }

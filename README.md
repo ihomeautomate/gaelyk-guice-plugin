@@ -87,7 +87,7 @@ With our dependency graph defined we can now add `MyGuiceServletContextListener`
 
 ## Usage
 
-Plugin adds `injectDependencies#(Object... definitions)` method to groovlets that can be used to easily inject dependencies into them but it also provides access to the `Injector` instance created from your implementation of `GuiceServletContextListener` for more advanced usages.
+Plugin adds `injectDependencies(Object... definitions)` method to groovlets that can be used to easily inject dependencies into them but it also provides access to the `Injector` instance created from your implementation of `GuiceServletContextListener` for more advanced usages.
 
 ### Using `injectDependencies()`
 
@@ -133,7 +133,7 @@ The following code in a groovlet will pass:
 
 ### Using `Injector` directly
 
-In situations when you need more control over the names under which dependencies are injected into the binding of the groovlet you can always fall back to using the `Injector` directly. An `Injector` instance is bound under `injector` in your groovlets. Given the example service and binding specified in the [Installation section](#installation) you can inject a `MyService` instance under a different name wit the following code:
+In situations when you need more control over the names under which dependencies are injected into the binding of the groovlet you can always fall back to using the `Injector` directly. An `Injector` instance is bound under `injector` in your groovlets. Given the example service and binding specified in the [Installation section](#installation) you can inject a `MyService` instance under a different name with the following code:
 
 	differentNameForMyService = injector.getInstance(MyService)
 
@@ -141,7 +141,7 @@ In situations when you need more control over the names under which dependencies
 
 ## Unit testing groovlets that use plugin features
 
-It is quite easy to mock `injectDependencies()` method. As it is using `injector#getInstance(Class)` and `injector#getInstance(Key)` under the covers all that you have to do is mock those methods and apply `InjectDependenciesCategory` using `spock.util.mop.Use`. Given an example groovlet, called `simpleInjection.groovy`:
+It is quite easy to mock `injectDependencies()` method. As it is using `injector#getInstance(Class)` and `injector#getInstance(Key)` under the covers all that you have to do is mock those methods and apply `InjectDependenciesCategory` using `spock.util.mop.Use` to you specification. Given an example groovlet, called `simpleInjection.groovy`:
 
 	injectDependencies MyService
 
@@ -165,6 +165,6 @@ It is quite easy to mock `injectDependencies()` method. As it is using `injector
 			simpleInjection.get()
 
 			then:
-			smoke.request.hello == 'Hello world!'
+			simpleInjection.request.hello == 'Hello world!'
 		}
 	 }

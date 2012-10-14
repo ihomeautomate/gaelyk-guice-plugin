@@ -1,3 +1,18 @@
+apply plugin: 'nexus'
+
+version = '0.1'
+group = 'org.gaelyk'
+
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.1'
+	}
+}
+
 dependencies {
 	compile 'com.google.inject.extensions:guice-servlet:3.0',
 		'org.apache.commons:commons-lang3:3.1'
@@ -5,4 +20,47 @@ dependencies {
 		exclude group: 'org.codehaus.groovy', module: 'groovy-all'
 	}
 	testRuntime 'org.objenesis:objenesis:1.2'
+}
+
+modifyPom {
+	project {
+		name 'Gaelyk Guice plugin'
+		description 'A Gaelyk plugin that provides support for using Guice as a Dependency Injection mechanism'
+		url 'https://github.com/erdi/gaelyk-guice-plugin'
+		inceptionYear '2012'
+
+		scm {
+			url 'https://github.com/erdi/gaelyk-guice-plugin'
+			connection 'scm:git://github.com/erdi/gaelyk-guice-plugin.git'
+			developerConnection 'scm:git@github.com:erdi/gaelyk-guice-plugin.git'
+		}
+
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id 'erdi'
+				name 'Marcin Erdmann'
+				email 'marcin.erdmann@proxerd.pl'
+			}
+		}
+	}
+	dependencies.removeAll(dependencies.findAll { it.scope == 'test' })
+}
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'A Gaelyk plugin that provides support for using Guice as a Dependency Injection mechanism',
+			'Implementation-Version': version,
+			'Built-By': System.getProperty('user.name'),
+			'Built-Date': new Date(),
+			'Built-JDK': System.getProperty('java.version'),
+			'Built-Gradle': gradle.gradleVersion
+	}
 }

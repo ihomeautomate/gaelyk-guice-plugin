@@ -87,7 +87,7 @@ With our dependency graph defined we can now add `MyGuiceServletContextListener`
 
 ## Usage
 
-Plugin adds `injectDependencies#(Object... definitions)` method to groovlets that can be used to easily inject dependencies into them but it also provides access to the `Injector` instance created from your implementation of `GuiceServletContextListener` for more advance usages.
+Plugin adds `injectDependencies#(Object... definitions)` method to groovlets that can be used to easily inject dependencies into them but it also provides access to the `Injector` instance created from your implementation of `GuiceServletContextListener` for more advanced usages.
 
 ### Using `injectDependencies()`
 
@@ -140,3 +140,31 @@ In situations when you need more control over the names under which dependencies
 	assert differentNameForMyService.injected == 'Hello World!'
 
 ## Unit testing groovlets that use plugin features
+
+It is quite easy to mock `injectDependencies()` method. As it is using `injector#getInstance(Class)` and `injector#getInstance(Key)` under the covers all that you have to do is mock those methods and apply `InjectDependenciesCategory` using `spock.util.mop.Use`. Given an example groovlet, called `simpleInjection.groovy`:
+
+	injectDependencies MyService
+
+	request.hello = myService.injected
+
+ Following is how a unit test for it might look like:
+
+	 @Use(InjectDependenciesCategory)
+	 class SimpleInjectionSpec extends ConventionalGaelykUnitSpec {
+		Injector injector = Mock(Injector)
+
+		void setup() {
+			simpleInjection.injector = injector
+		}
+
+		void "groovlets that use injection can be unit tested"() {
+			given:
+			injector.getInstance(MyService) >> new MyService('Hello world!')
+
+			when:
+			simpleInjection.get()
+
+			then:
+			smoke.request.hello == 'Hello world!'
+		}
+	 }

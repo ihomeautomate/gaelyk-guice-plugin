@@ -1,0 +1,3 @@
+moduleName=gaelyc-guice-plugin
+moduleVersion=0.1.1
+extensionClasses=groovyx.gaelyk.plugin.guice.InjectDependenciesCategory

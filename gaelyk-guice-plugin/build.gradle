@@ -1,6 +1,7 @@
 apply plugin: 'nexus'
+apply plugin: 'maven-publish'
 
-version = '0.1'
+version = '0.1.1'
 group = 'org.gaelyk'
 
 buildscript {
@@ -63,4 +64,16 @@ jar {
 			'Built-JDK': System.getProperty('java.version'),
 			'Built-Gradle': gradle.gradleVersion
 	}
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+//            groupId 'org.gradle.sample'
+//            artifactId 'project1-sample'
+//            version '1.1'
+
+            from components.java
+        }
+    }
 }

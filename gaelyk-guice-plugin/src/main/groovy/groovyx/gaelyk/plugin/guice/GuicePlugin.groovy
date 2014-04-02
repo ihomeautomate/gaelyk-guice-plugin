@@ -24,7 +24,6 @@ class GuicePlugin extends PluginBaseScript {
 
 	@Override
 	Object run() {
-		categories InjectDependenciesCategory
 		before {
 			binding.injector = request.getAttribute(INJECTOR_ATTRIBUTE)
 		}
